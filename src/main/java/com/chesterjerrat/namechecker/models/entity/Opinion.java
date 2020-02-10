@@ -1,9 +1,12 @@
 package com.chesterjerrat.namechecker.models.entity;
 
+import com.chesterjerrat.namechecker.models.dto.AddOpinion;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Entity
 @Table(name = "opinions")
@@ -24,6 +27,18 @@ public class Opinion {
 
     @Column(name = "timestamp")
     private String timestamp;
+
+    public Opinion() {
+
+    }
+
+    public Opinion(String name, AddOpinion addOpinion) {
+        this.uuid = UUID.randomUUID().toString();
+        this.name = name;
+        this.comment = addOpinion.getComment();
+        this.experience = addOpinion.getExperience();
+        this.timestamp = String.valueOf((System.currentTimeMillis()/1000));
+    }
 
     public String getUuid() {
         return uuid;

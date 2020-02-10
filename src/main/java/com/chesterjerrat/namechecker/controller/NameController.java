@@ -12,26 +12,27 @@ import java.util.List;
 
 @CrossOrigin
 @Controller
-@RequestMapping("api/names")
+@RequestMapping("/api")
 public class NameController {
 
     @Autowired
     private NameResource nameResource;
 
-    @RequestMapping(value="", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value="/names", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
     public ResponseEntity<CommonResponseObject> addName(@RequestBody AddName addName) {
         CommonResponseObject response = nameResource.addName(addName);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @RequestMapping(value="", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value="/names", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
     public ResponseEntity<List<Name>> getNames() {
         List<Name> nameList = nameResource.getNames();
         return new ResponseEntity<>(nameList, HttpStatus.OK);
     }
 
-    @RequestMapping(value="{name}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+    @RequestMapping(value="/names/{name}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
     public ResponseEntity<Name> getSingleName(@PathVariable(value = "name") String searchName) {
+        searchName = searchName.toLowerCase().trim();
         Name name = nameResource.getName(searchName);
         if (name == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -39,4 +40,9 @@ public class NameController {
             return new ResponseEntity<>(name, HttpStatus.OK);
         }
     }
+
+
+
+
+
 }
